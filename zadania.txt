@@ -1,0 +1,50 @@
+Na dzisiejszych zajęciach zajmiemy się obsługą wielu klientów po stronie serwera.
+Chcielibyśmy, aby wiadomość przesłana do serwera przez jednego Clienta została przesłana do wszystkich połączonych klientów.
+W tym celu trzeba przechowywać referencję do wszystkich aktywnych połączeń i w momencie odebrania wiadomości w jednym ClientHandlerze
+rozpropagować ją do pozostałych.
+
+Wszystkie potrzebne informację na temat socketów można doczytać tutaj:
+https://docs.oracle.com/javase/tutorial/networking/sockets/
+
+Zajmiemy się problemem:
+(java.net.SocketException: Connection reset)
+Try with resources..
+
+
+Aktualnie nasze wiadomości "wędrują" przez internet niezaszyfrowane. Wprowadzimy więc proste szyfrowanie symetryczne.
+Szyfr symetryczny to taki, w którym można odkodować i zakodować wiadomość tym samym kluczem.
+Najbardziej popularnym szyfrem symetrycznym jest szyfr Cezara. Polega on na przesunięciu "w przód" każdej litery szyfrowanego tekstu.
+Np tekst: "baca" po zaszyfrowaniu kluczem '3' to "edfd".
+
+
+
+Czym się będziemy zajmować w czwartek?
+Skończymy szyfrowanie Cezara.
+Słusznie zauważyliście, że nie musimy walidować, czy cos jest napisem, czy nie.
+Możemy na nasze potrzeby założyć, że przesuwamy wszystko o klucz z zakresu <1,127>.
+
+Przerobimy komunikację miedzy clientem i serverem,
+tak aby przesyłała JSON wraz z informacjami:
+-kto przesyła wiadomość
+-o której godzinie
+-treść wiadomości
+
+Trzeba zmodyfikować kod w miejscu otrzymywania wiadomosci.
+Trzeba sparsowac jsona do obiektu klasy message Dto i przekazac go do widoku.
+
+Połączyć przesylanie danych z szfrowaniem. Szyfrujmy tylko content, mamy logowanie po stronie servera, wiec zobaczymy,
+ czy wiadomosc mozna"podglądnąć".
+
+Na piatek:(i byc moze nast. tydzien)
+Dolozymy drugie okienko do wpisiania loginu przed polaczeniem z serverem.
+Dorobimy informacje dla userow o tym, ze ktos nowy sie wlasnie podlaczyl.
+Przerobimy troche propertiesy(adres servera, porty),
+ tak aby braly sie z pliku z propertiesami. Wykorzystamy do tego System.properties(...)
+
+Przerobimy chat tak, zeby obslugiwal pisanie do pojedynczej osoby i do wszystkich.
+W tym celu zmodyfikujemy widok tak, aby po lewej byla lista aktualnie podpietych clientow.
+Trzeba bedzie troche zmodyfikowac server tak, aby usuwal 'martwe polaczenie'.
+
+
+Trzeba dolozyc informacje do MessageDto. Od kogo i do kogo jest wiadomosc, oraz 'rodzaj wiadomosci'.
+Bedzie to informacja o tym, czy wiadomosc jest inicjujaca (konfiguracyjna), czy zwykla.
